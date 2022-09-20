@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="" >
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    <title>Document</title>
+</head>
+<style>
+
+ *{
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+   font-size: 20px;
+   
+ }  
+
+ body{
+  max-width: 1920px;
+  margin: auto 0;
+
+ }
+
+
+ header{
+  display: flex;
+  padding: 10px 5px;
+
+ }
+
+ .nav-left{
+  display: flex;
+  justify-content: space-between;
+ 
+  flex:1;
+
+ }
+
+ .nav-icon{
+   width: 30px;
+   display: none;
+ }
+
+
+ ul{
+   display:flex;
+   justify-content: flex-end;
+    
+ }
+ li{
+  margin-left:1rem ; 
+  list-style-type: none;
+ }
+
+ a:link, a:visited {
+  
+  color: black;
+  
+  text-align: center;
+  text-decoration: none;
+  display: flex;
+  display: inline-block;
+}
+a:hover{
+  border-bottom-style: double;
+  color:#00cec9 ;
+}
+
+
+
+.page{
+  display: flex;
+  width:100%;
+  height: 300px;
+  background-color: #BDE0FE;
+  margin-bottom: 2rem;
+}
+
+h2{
+  
+  font-size: 2rem;
+  
+
+}
+
+
+
+
+section{
+   display: flex;
+   flex-wrap: wrap;
+   width:1200px;
+   justify-content: center;
+   align-items:center ;
+   margin: auto;
+  
+
+}
+.pro-img{
+  width: 80px;
+  height: 50px;
+
+}
+
+img{
+  width:100%;
+   object-fit: cover;
+
+}
+
+.pro{
+ display: flex;
+ 
+ width: 48%;
+ margin: 1%;
+ height: 50px;
+ background-color: #BDE0FE;
+
+
+}
+h3{
+  line-height: 50px;
+  padding-left: 5px;
+}
+
+
+.second-div{
+  background-color: #BDE0FE;
+  width: 23%;
+  height:220px;
+  margin: 1%;
+
+
+}
+.second-img{
+  height:80%
+
+}
+
+h1{
+  text-align: center;
+}
+
+@media screen and (max-width: 1200px) {
+  section {
+    width:90%
+  }
+
+  .pro{
+    width: 48%;
+     margin: 1%;
+     height: 50px;
+
+  }
+  .second-div{
+    width: 48%;
+     margin: 1%;
+
+  }
+}
+
+
+@media screen and (max-width: 600px) and (min-width:360px) {
+  h4{
+    width: 100%;
+ }
+  
+  section {
+    width:90%
+  }
+
+  .pro{
+    width: 98%;
+     margin: 1%;
+     height: 50px;
+
+  }
+  h2{
+    font-size: 1.5rem;
+  }
+
+ 
+  .second-div{
+    width: 98%;
+     margin: 1%;
+
+  }
+  nav{
+   display: none;
+  
+  }
+  
+  
+  .nav-icon{
+   width: 30px;
+   display: flex;
+ }
+
+
+
+}
+   
+
+
+
+
+</style> 
+
+
+<body>
+  <header>
+  <div class="nav-left">
+    <h4 >My Website</h4>
+    <img src="./menu-icon.svg" alt="" class="nav-icon">
+
+  </div>  
+   
+ <nav>
+  <ul>
+    <li><a href="">Home</a></li>
+    <li><a href="">About</a></li>
+    <li><a href="">Page</a></li>
+    <li><a href="">Contact</a></li>
+   
+ </ul> 
+
+ </nav>
+
+  </header>
+ 
+  <section class="page">
+    <h2>Welcome to MyHome</h2>
+
+  </section>
+    
+  </header>
+
+  <section>
+   
+
+     <div class="pro">
+      <img src="./pic.jpg" alt="" class="pro-img">
+      <h3>Promotion 1</h3>
+      
+      
+    
+    </div>
+     
+     <div class="pro">
+      <img src="./pic.jpg" alt="" class="pro-img">
+      <h3>Promotion 2</h3>
+
+     </div>
+     
+     
+     <div class="second-div">
+      <img src="./pic.jpg" alt="" class="second-img">
+      <h1 class="second-h1">Title 1</h1>
+    </div>
+      
+    
+     <div class="second-div">
+      <img src="./pic.jpg" alt="" class="second-img">
+      <h1 >Title 2</h1>
+     </div>
+     <div  class="second-div">
+      <img src="./pic.jpg" alt="" class="second-img">
+      <h1 >Title 3</h1>
+     </div>
+     <div  class="second-div">
+      <img src="./pic.jpg" alt="" class="second-img">
+      <h1 >Title 4</h1>
+     </div>
+     <div  class="second-div">
+      <img src="./pic.jpg" alt="" class="second-img">
+      <h1 >Title 5</h1>
+     </div>
+     <div  class="second-div">
+      <img src="./pic.jpg" alt="" class="second-img">
+      <h1 >Title 6</h1>
+     </div>
+     <div  class="second-div">
+      <img src="./pic.jpg" alt="" class="second-img">
+      <h1>Title 7</h1>
+     </div>
+     <div  class="second-div">
+      <img src="./pic.jpg" alt="" class="second-img">
+      <h1>Title 8</h1>
+     </div>
+     
+
+     
+  </section>
+
+
+
+     
+
+</body>
+</html>
