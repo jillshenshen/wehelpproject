@@ -58,7 +58,6 @@
  a:link, a:visited {
   
   color: black;
-  
   text-align: center;
   text-decoration: none;
   display: flex;
@@ -80,10 +79,7 @@ a:hover{
 }
 
 h2{
-  
   font-size: 2rem;
-  
-
 }
 
 
@@ -147,7 +143,8 @@ h3{
   position: absolute;
   z-index: 99;
   width: 10%;
-  right:0
+  right:10px;
+  top:10px;
 }
 
 .h1-div{
@@ -156,12 +153,14 @@ h3{
   height:100%;
   align-items: flex-end;
   
+  
 }
 h1{
   position: relative;
   background-color:rgba(255, 255, 255, 0.445);
   width: 100%;
   text-align: center; 
+  padding: 5px;
   
 }
 
@@ -203,25 +202,47 @@ h1{
     font-size: 1.5rem;
   }
 
- 
+  ul{
+    display: none;
+
+  } 
   .second-div{
     width: 98%;
      margin: 1%;
 
   }
-  nav{
-   display: none;
-  
+  .open-nav{
+    position: fixed;
+    z-index: 100;
+    right: 0;
+    top:0;
+    width: 50%;
+    height: 100%;
+    background-color: white;
+    font-size: 0;
   }
-  
+  .open-nav li{
+    margin-left: 0px;
+
+  }
+
+  .open-nav ul{
+    display: block;
+    margin-top: 1em;
+    
+  }
+
+  .open-nav ul a{
+    padding: 0.75em 3.5em;
+    width: 100%;
+    
+  }
   
   .nav-icon{
    width: 30px;
    display: flex;
+   cursor: pointer;
  }
-
-
-
 }
    
 
@@ -341,9 +362,20 @@ h1{
      
   </section>
 
-
-
-     
-
 </body>
+   
+<script>
+   const menu=document.querySelector('.nav-icon');
+   const nav=document.querySelector('nav');
+
+   menu.addEventListener("click",()=>{
+      nav.classList.add("open-nav");
+   
+   })
+   nav.addEventListener("click",()=>{
+      nav.classList.remove("open-nav")
+   })
+
+</script>
+
 </html>
