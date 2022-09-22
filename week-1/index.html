@@ -34,7 +34,6 @@
  .nav-left{
   display: flex;
   justify-content: space-between;
- 
   flex:1;
 
  }
@@ -80,6 +79,7 @@ a:hover{
 
 h2{
   font-size: 2rem;
+
 }
 
 
@@ -152,8 +152,7 @@ h3{
   justify-content: center;
   height:100%;
   align-items: flex-end;
-  
-  
+ 
 }
 h1{
   position: relative;
@@ -252,7 +251,7 @@ h1{
 </style> 
 
 
-<body>
+<body class="body">
   <header>
   <div class="nav-left">
     <h4 >My Website</h4>
@@ -260,9 +259,9 @@ h1{
 
   </div>  
    
- <nav>
+ <nav class="navbar">
   <ul>
-    <li><a href="">Home</a></li>
+    <li class><a href="">Home</a></li>
     <li><a href="">About</a></li>
     <li><a href="">Page</a></li>
     <li><a href="">Contact</a></li>
@@ -365,16 +364,19 @@ h1{
 </body>
    
 <script>
-   const menu=document.querySelector('.nav-icon');
-   const nav=document.querySelector('nav');
+ 
+   const nav=document.querySelector(".navbar");
 
-   menu.addEventListener("click",()=>{
-      nav.classList.add("open-nav");
-   
+   document.addEventListener("click",(e)=>{
+        if(e.target.classList =="nav-icon" || e.target===nav ){
+          nav.classList.add("open-nav");
+
+        }else(
+          nav.classList.remove("open-nav"))
+         
    })
-   nav.addEventListener("click",()=>{
-      nav.classList.remove("open-nav")
-   })
+
+ 
 
 </script>
 
