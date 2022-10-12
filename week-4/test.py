@@ -1,18 +1,23 @@
 from crypt import methods
 from email import message
+from this import d
 from flask import Flask
 from flask import request
 from flask import render_template
 from flask import session
 from flask import redirect
 from flask import url_for
+
 app=Flask(__name__,static_folder="public",static_url_path="/")
 app.secret_key="member"
 
-@app.route("/")
+@app.route("/",methods=["get","post"])
 def index():
-    
+    if request.method == 'POST':
+        result=request.form["number"]
+        return redirect(url_for("square",number=result))
     return render_template("index.html")
+
 
 @app.route("/signin",methods=["post"])
 def signin():
@@ -49,9 +54,13 @@ def error():
 def signout():
     session.pop("username",None)
     return redirect("/")
-  
 
 
+
+@app.route("/square/<number>" ,methods=["get","post"])
+def square(number):
+        return render_template("num.html",answer=int(number)*int(number))
+   
 
 
 app.run(port=3000)
