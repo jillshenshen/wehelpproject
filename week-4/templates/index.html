@@ -52,8 +52,8 @@
     
     <hr>
         <h3>計算正整數的平方:</h3>
-       <form action="/" method="post">
-        輸入正整數： <input type="text" name="number"/> 
+       <form id="myform">
+        輸入正整數： <input type="text" name="number" id="number"/> 
         <br>
       
         <button>計算</button>
@@ -62,4 +62,17 @@
    
        
 </body>
+
+<script>
+   const number=document.getElementById("number") 
+   const myform=document.getElementById("myform")
+
+   myform.addEventListener("submit",(e)=>{
+       e.preventDefault();
+       const numbervalue=number.value;
+       const url=`http://localhost:3000/square/${numbervalue}`
+       window.location=url
+   }) 
+
+</script>
 </html>

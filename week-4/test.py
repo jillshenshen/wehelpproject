@@ -1,21 +1,14 @@
 from crypt import methods
 from email import message
 from this import d
-from flask import Flask
-from flask import request
-from flask import render_template
-from flask import session
-from flask import redirect
-from flask import url_for
+from flask import Flask ,request,render_template,session,redirect,url_for,make_response
+
 
 app=Flask(__name__,static_folder="public",static_url_path="/")
 app.secret_key="member"
 
 @app.route("/",methods=["get","post"])
 def index():
-    if request.method == 'POST':
-        result=request.form["number"]
-        return redirect(url_for("square",number=result))
     return render_template("index.html")
 
 
@@ -25,8 +18,11 @@ def signin():
     password=request.form["password"]
     
     if name=="test" and password=="test":
-       session["username"]=name
-       return redirect("/member")
+        # session["username"]=name
+        resp = make_response(redirect("/member"))
+        resp.set_cookie('userID', name,secure=True, httponly=True, samesite='Lax')      
+        return resp
+        
     if not name or not password:
         
         return redirect("/error?message=123")
@@ -36,7 +32,9 @@ def signin():
 
 @app.route("/member")
 def member():
-    if "username" in session: 
+    getuser=request.cookies.get("userID")
+    # if "username" in session: 
+    if getuser: 
         return render_template("member.html")
     else:
         return render_template("index.html")
@@ -52,15 +50,14 @@ def error():
 
 @app.route("/signout")
 def signout():
-    session.pop("username",None)
-    return redirect("/")
-
-
+    # session.pop("username",None)
+    resp = make_response(redirect("/"))
+    resp.set_cookie(key='userID', value='', expires=0)
+    return resp
+    
 
 @app.route("/square/<number>" ,methods=["get","post"])
 def square(number):
         return render_template("num.html",answer=int(number)*int(number))
-   
-
 
 app.run(port=3000)
