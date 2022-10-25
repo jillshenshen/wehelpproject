@@ -25,10 +25,12 @@ def index():
 def signup():
     name=request.form["name"]
     username=request.form["username"]
+    print(username)
     password=request.form["password"]
     cursor=connection.cursor()   
-    sql=f'''select username from member where username="{username}"'''
-    cursor.execute(sql)
+    sql='''select username from member where username=%s'''
+    val=(username,)
+    cursor.execute(sql,val)
     result=cursor.fetchone()  
     if result:
         return redirect("/error?message=456")
@@ -47,13 +49,14 @@ def signin():
     password=request.form["password"]
     cursor = connection.cursor()
 
-    sql=f'''select username,password from member where username="{username}" and password="{password}"'''
-
-    cursor.execute(sql)
+    sql='''select username,password,id,name  from member where username=%s and password=%s'''
+    val=(username,password) 
+    cursor.execute(sql,val)
     result=cursor.fetchone()
+ 
     if result:
-            session["id"]=result[0]
-            session["name"]=result[1]
+            session["id"]=result[2]
+            session["name"]=result[3]
             return redirect("/member")
         
     else :
@@ -97,8 +100,9 @@ def message():
     content=request.form["content"]
     id=session["id"]
     cursor = connection.cursor()
-    sql= f''' insert into message(member_id,content) values("{id}","{content}")'''
-    cursor.execute(sql)
+    sql= ''' insert into message(member_id,content) values(%s,%s);'''
+    val=(id,content)
+    cursor.execute(sql,val)
     connection.commit()  
     return redirect("/member")
         
