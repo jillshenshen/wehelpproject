@@ -26,23 +26,20 @@ def signup():
     name=request.form["name"]
     username=request.form["username"]
     password=request.form["password"]
-    cursor=connection.cursor()
-    sql='''select * from member '''
-
+    cursor=connection.cursor()   
+    sql=f'''select username from member where username="{username}"'''
     cursor.execute(sql)
-    result=cursor.fetchall()
-    for i in result:
-        if i[2]==username:
-            return  redirect("/error?message=456")  
+    result=cursor.fetchone()  
+    if result:
+        return redirect("/error?message=456")
     else:
         new_sql="insert into member(name,username,password) VALUES (%s, %s, %s);"
-        new_data=(name,username,password)
-            
+        new_data=(name,username,password)           
         cursor.execute(new_sql,new_data)
         connection.commit()
         return redirect("/")  
 
-
+# --------------登入網址-----------------
 @app.route("/signin",methods=["post"])
 def signin():
     
@@ -50,15 +47,13 @@ def signin():
     password=request.form["password"]
     cursor = connection.cursor()
 
-    sql='''select * from member '''
+    sql=f'''select username,password from member where username="{username}" and password="{password}"'''
 
     cursor.execute(sql)
-    result=cursor.fetchall()
-    for i in result:
-       
-        if i[2]==username and i[3]==password:
-            session["id"]=i[0]
-            session["name"]=i[1]
+    result=cursor.fetchone()
+    if result:
+            session["id"]=result[0]
+            session["name"]=result[1]
             return redirect("/member")
         
     else :
@@ -73,8 +68,7 @@ def member():
    cursor.execute(sql)
    result=cursor.fetchall()
    
-   if "id" and "name" in session:
-        
+   if "id" and "name" in session:       
         return render_template("member.html",name=session["name"],result=result)
    else:
         return render_template("index.html") 
