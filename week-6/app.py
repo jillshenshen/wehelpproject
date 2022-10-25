@@ -12,7 +12,7 @@ connection = mysql.connector.connect(
 host="localhost",
 database="website",
 user="root",
-password="bent209muff449"
+password="0000"
 )
 
 # ---------------首頁--------------------
