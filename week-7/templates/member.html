@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+     *{
+        margin: 0;
+        padding: 0;
+
+    }
+    header{
+        background-color: rgb(31, 31, 89);
+        padding: 1rem;
+        text-align: center;
+    }
+    h1{
+        color: white;
+    }
+    h3{
+        text-align: center;
+        margin: 1rem;
+        font-size: 20px;
+    }
+    div{
+       
+        display: flex;
+        justify-content: center;
+    }
+  
+    form{
+       text-align: center;
+       padding: 1rem;
+       background-color: rgb(127, 163, 255);
+     
+   }
+   .search,.update{
+       display: block;
+       text-align: center;
+     
+       padding: 1rem;
+       background-color: rgb(127, 163, 255);
+   }
+   input{
+    margin: 1rem 0;
+   }
+
+ 
+</style>
+
+    <header>
+        <h1>歡迎光臨,這是會員頁</h1>
+    </header>
+    <h3 id="welcome">{{name}},成功登入系統</h3>
+    <div>  <a href="/signout">登出系統</a></div>
+    <hr>
+    <div class="search">
+        <h2>查詢會員姓名</h2>
+    
+        <input type="text" name="username" id="input" placeholder="輸入會員帳號" /> 
+        <br>
+        <button id="btn">查詢</button>
+        <h3 id="name">
+        </h3>       
+    </div>
+    
+      
+    <hr>
+    <div class="update">
+        <h2>更新我的姓名</h2>
+    
+        <input type="text" name="change" id="change" placeholder="輸入新的姓名" />
+        <br>
+        <button id="update">更新</button>
+        <h3 id="success"></h3>
+    </div>
+
+    <hr>
+        <form action="/message" method="post">
+            <h2>快來留言吧</h2>
+        
+            內容<input type="text" name="content"/>
+            <br>
+            <button>送出</button>
+        </form>
+       
+    <hr>
+    {% for i in result %}
+       <h3>{{ i[0] }}:{{ i[1] }}</h3>
+    
+    {% endfor %}
+</body>
+
+<script>
+const btn = document.getElementById("btn");
+const input = document.getElementById("input")
+const name = document.getElementById("name")
+const update = document.getElementById("update")
+const change = document.getElementById("change")
+btn.addEventListener("click", (e) => {
+	let inputvalue = input.value
+	input.value = ""
+	let url = `http://localhost:3000/api/member?username=${inputvalue}`;
+	fetch(url).then(function(response) {
+		return response.json();
+	}).then(function(result) {
+		let final = result.data.name
+		if (final) {
+			name.innerText = `${final}(${inputvalue})`
+		} else {
+			name.innerText = "查無此人"
+		}
+	})
+})
+update.addEventListener("click", () => {
+	let newname = change.value
+	let welcome = document.getElementById("welcome")
+	let success = document.getElementById("success")
+	change.value = ""
+	fetch('http://localhost:3000/api/member', {
+		method: 'PATCH',
+		body: JSON.stringify({
+			name: `${newname}`,
+		}),
+		headers: {
+			'Content-type': 'application/json; charset=UTF-8',
+		},
+	}).then((response) => response.json()).then(function(result) {
+		if (result.ok) {
+			welcome.innerText = `${newname},成功登入系統`;
+			success.innerText = "更新成功";
+		} else {
+			success.innerText = "更新失敗"
+		}
+	})
+})  
+ 
+</script>
+</html>
