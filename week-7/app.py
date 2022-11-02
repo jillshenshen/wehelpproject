@@ -2,7 +2,8 @@ from crypt import methods
 from email import message
 from this import d
 from urllib import response
-from flask import Flask ,request,render_template,session,redirect,url_for,make_response,json,jsonify,Response
+from flask import Flask ,request,render_template,session,redirect,url_for,make_response,json,Response
+from flask import jsonify
 import json 
 import mysql.connector
 from mysql.connector import Error
@@ -60,9 +61,7 @@ def signin():
             session["id"]=result[2]
             session["name"]=result[3]
             return redirect("/member")
-        
-    else :
-        return  redirect("/error?message=123")  
+    return  redirect("/error?message=123")  
 
 # --------------會員頁面網址---------------
 
@@ -75,8 +74,7 @@ def member():
    
    if "id" and "name" in session:       
         return render_template("member.html",name=session["name"],result=result)
-   else:
-        return render_template("index.html") 
+   return redirect("/")
     
  
 # --------------錯誤頁面-------------------
@@ -98,15 +96,24 @@ def signout():
     
 # --------------留言系統----------------------
 @app.route("/message" ,methods=["get","post"])
-def message():
+def message():   
     content=request.form["content"]
     id=session["id"]
-    cursor = connection.cursor()
-    sql= ''' insert into message(member_id,content) values(%s,%s);'''
-    val=(id,content)
-    cursor.execute(sql,val)
-    connection.commit()  
-    return redirect("/member")
+    try:
+        if "id" and "name" in session:  
+            cursor = connection.cursor()
+            sql= ''' insert into message(member_id,content) values(%s,%s);'''
+            val=(id,content)
+            cursor.execute(sql,val)
+            connection.commit()  
+            return redirect("/member")
+        else:    
+            return redirect("/")
+    except:
+        print("Unexpected Error")
+    finally:
+        cursor.close()   
+
 
 #---------------查詢會員api-------------------
 @app.route("/api/member",methods=["get"])
@@ -122,40 +129,43 @@ def api():
         content={}
         if result:
                 content["data"]={"id":result[0],"name":result[1],"username":result[2]}
-            
-        else:
-                content["data"]="null"
+        else:       
+            content["data"]="null"
     except:
         print("Unexpected Error")
     finally:
         cursor.close()
                    
-
-    json_string=json.dumps(content,ensure_ascii = False)
-    res=Response(json_string,content_type="application/json; charset=utf-8" )
+    app.config['JSON_AS_ASCII'] = False
+    json_string=jsonify(content)
+    res=make_response(json_string,200)
     return res
 
 #---------------修改姓名api-------------------
 @app.route("/api/member",methods=["patch"])
 def patch():
+    app.config['JSON_AS_ASCII'] = False
     new_data=request.json
     new_name=new_data["name"]
     message={}
     try:
-        cursor = connection.cursor()
-        sql='''update member set name=%s where id=%s '''
-        val=(new_name,session["id"])
-        cursor.execute(sql,val)
-        connection.commit()
-        message={"ok":True}
-        session["name"]=new_name
+        if "id" and "name" in session:
+            cursor = connection.cursor()
+            sql='''update member set name=%s where id=%s '''
+            val=(new_name,session["id"])
+            cursor.execute(sql,val)
+            connection.commit()
+            message={"ok":True}
+            session["name"]=new_name
+        else:    
+            message={"error":True}    
     except:
         message={"error":True}
     finally:
         cursor.close()          
     
-    json_string=json.dumps(message,ensure_ascii = False)
-    res=Response(json_string,content_type="application/json; charset=utf-8" )
+    json_string=jsonify(message)
+    res=make_response(json_string,200)
     return res
 
 app.run(port=3000)
